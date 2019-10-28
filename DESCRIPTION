@@ -1,0 +1,24 @@
+Package: airPb
+Title: Calculates Estimates of Airborne Lead Exposure at Point Locations in the Cincinnati, OH Area
+Version: 0.0.0.9000
+Author: Erika Rasnick, Cole Brokamp, Pat Ryan
+Maintainer: Erika Rasnick <erika.rasnick@cchmc.org>
+Description: Easily and reproducibly assess exposure to airborne lead
+    at specific locations in and around Cincinnati, Ohio. The package calculates predictions of air lead 
+    exposure from a land use random forest model developed by Dr. Cole Brokamp based on ambient air sampling 
+    in Cincinnati, OH between 2001 and 2005. Additionally scale estimates to account for temporal variation
+    in air lead in the region.
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    randomForest (>= 4.6-14),
+    dplyr (>= 0.8.3),
+    purrr (>= 0.3.3),
+    sf (>= 0.8-0),
+    tidyr (>= 1.0.0),
+    raster (>= 3.0-7),
+    sp (>= 1.3-1),
+    stats
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
