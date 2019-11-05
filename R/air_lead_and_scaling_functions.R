@@ -58,14 +58,6 @@ calculate_airPb <- function(locations, return.LU.vars=FALSE) {
   return(out)
 }
 
-
-# d <- data.frame(id = 1:3, lon = c(-83.191771, -84.517997, -84.617997), lat = c(40.0204212, 39.1502776, 39.2502776))
-# calculate_air_lead(d, return.LU.vars = FALSE)
-
-
-
-
-
 #' Calculate temporal scaling factors based on EPA measurements of airborne lead.
 #'
 #' \code{calculate_scaling_factors()} constructs temporal scaling factors based on measurements
@@ -144,13 +136,6 @@ calculate_scaling_factors <- function(dates) {
   return(dates$scaling_factor)
 }
 
-#ncalculate_scaling_factors(dates = data.frame(start_date = as.Date("2010-01-01"), end_date = as.Date("2010-02-01")))
-
-
-
-
-
-
 #' Calculate temporally scaled air lead exposure estimates at specific locations.
 #'
 #' \code{calculate_scaled_airPb()} is a wrapper function that estimates airborne lead exposures
@@ -193,26 +178,4 @@ calculate_scaled_airPb <- function(locations) {
 
   return(lead_adj)
 }
-
-# d <- tibble::tribble(
-#   ~id,         ~lon,        ~lat,        ~date,
-#   809089L, -84.69127387, 39.24710734, as.Date("2010-01-08"),
-#   809089L, -84.69127387, 39.24710734, as.Date("2010-02-08"),
-#   809089L, -84.69127387, 39.24710734, as.Date("2010-03-08"),
-#   799697L, -84.41741798, 39.18541228, as.Date("2010-01-10"),
-#   799697L, -84.41741798, 39.18541228, as.Date("2012-02-10")
-# )
-#
-# d <- d %>%
-#   rename(start_date = date) %>%
-#   group_by(id) %>%
-#   mutate(end_date = lead(start_date)) %>%
-#   filter(!is.na(end_date)) %>%
-#   ungroup()
-#
-# d %>%
-#   mutate(scaled_airPb = calculate_scaled_airPb(.))
-
-
-
 
