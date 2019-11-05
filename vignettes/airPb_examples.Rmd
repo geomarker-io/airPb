@@ -1,0 +1,81 @@
+---
+title: "Example Usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message=FALSE}
+library(airPb)
+library(tidyverse)
+```
+
+### Example 1: Using `calculate_airPb()` and `calculate_scaling_factors()` and manually applying scaling factors to air lead estimates.
+
+```{r}
+d <- tibble::tribble(
+  ~id,         ~lon,        ~lat,
+    809089L, -84.69127387, 39.24710734,
+    813233L, -84.47798287, 39.12005904,
+    814881L, -84.47123583,  39.2631309,
+    799697L, -84.41741798, 39.18541228,
+    799698L, -84.41395064, 39.18322447
+  )
+
+my_dates <- data.frame(start_date = as.Date(c("2010-01-08", "2012-06-08", "2010-01-09", "2015-04-09", "2010-01-10")),
+                       end_date = as.Date(c("2010-02-08", "2012-07-08", "2010-02-09", "2015-05-09", "2010-02-10")))
+
+d %>% 
+  mutate(airPb = calculate_airPb(. , return.LU.vars = FALSE), 
+         scaling_factors = calculate_scaling_factors(my_dates), 
+         scaled_airPb = airPb * scaling_factors)
+```
+
+### Example 2: Using the `calculate_scaled_airPb()` wrapper function to automatically apply scaling factors to air lead estimates.
+
+A common use case is calculating monthly exposures. For example, we may have a pair of coordinates recorded annually for each participant. In the data below, we have 2 unique ids, with lat/lon recorded once per year.
+
+```{r}
+d <- tibble::tribble(
+  ~id,         ~lon,        ~lat,        ~date,
+    809089L, -84.69127387, 39.24710734, as.Date("2010-01-08"),
+    809089L, -84.69127387, 39.24710734, as.Date("2011-01-08"),
+    809089L, -84.69127387, 39.24710734, as.Date("2012-01-08"),
+    799697L, -84.41741798, 39.18541228, as.Date("2011-01-10"),
+    799697L, -84.41741798, 39.18541228, as.Date("2012-02-10")
+  )
+```
+
+We want to scale the air lead measurements to monthly exposures between these dates, but we need `start_date` and `end_date` columns that represent the monthy time periods we want to average over.
+
+```{r}
+d <- d %>% 
+  mutate(from = date,
+         to = from + lubridate::years(1)) %>% 
+  group_by(id, date) %>% 
+  nest() %>% 
+  mutate(dates = map(data, ~seq.Date(from = .x$from, 
+                                     to = .x$to, 
+                                     by = '3 months'))) %>% 
+  unnest(cols=c('data', 'dates')) %>% 
+  dplyr::select(-from, -to) %>% 
+  rename(start_date = dates) %>% 
+  mutate(end_date = lead(start_date)) %>% 
+  filter(!is.na(end_date)) %>% 
+  ungroup()
+
+d %>% 
+  mutate(scaled_airPb = calculate_scaled_airPb(.))
+```
+
+
+
