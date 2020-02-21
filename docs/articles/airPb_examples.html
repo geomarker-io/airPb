@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">airPb</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9</span>
       </span>
     </div>
 
@@ -59,7 +59,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/geomarker-io/airPb">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -75,7 +82,7 @@
       <h1>Example Usage</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/geomarker-io/airPb/blob/master/vignettes/airPb_examples.Rmd"><code>vignettes/airPb_examples.Rmd</code></a></small>
       <div class="hidden name"><code>airPb_examples.Rmd</code></div>
 
     </div>
@@ -83,7 +90,9 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(airPb)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(purrr)</a></code></pre></div>
 <div id="example-1-using-calculate_airpb-and-calculate_scaling_factors-and-manually-applying-scaling-factors-to-air-lead-estimates-" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1-using-calculate_airpb-and-calculate_scaling_factors-and-manually-applying-scaling-factors-to-air-lead-estimates-" class="anchor"></a>Example 1: Using <code>calculate_airPb()</code> and <code>calculate_scaling_factors()</code> and manually applying scaling factors to air lead estimates.</h3>
@@ -100,7 +109,7 @@
 <a class="sourceLine" id="cb2-11" data-line-number="11">                       <span class="dt">end_date =</span> <span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2010-02-08"</span>, <span class="st">"2012-07-08"</span>, <span class="st">"2010-02-09"</span>, <span class="st">"2015-05-09"</span>, <span class="st">"2010-02-10"</span>)))</a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb2-13" data-line-number="13">d <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">airPb =</span> <span class="kw"><a href="../reference/calculate_airPb.html">calculate_airPb</a></span>(. , <span class="dt">return.LU.vars =</span> <span class="ot">FALSE</span>), </a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">airPb =</span> <span class="kw"><a href="../reference/calculate_airPb.html">calculate_airPb</a></span>(. , <span class="dt">return.LU.vars =</span> <span class="ot">FALSE</span>), </a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">         <span class="dt">scaling_factors =</span> <span class="kw"><a href="../reference/calculate_scaling_factors.html">calculate_scaling_factors</a></span>(my_dates), </a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">         <span class="dt">scaled_airPb =</span> airPb <span class="op">*</span><span class="st"> </span>scaling_factors)</a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; # A tibble: 5 x 6</span></a>
@@ -112,9 +121,9 @@
 <a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; 4 799697 -84.4  39.2 1.03            0.401        0.415</span></a>
 <a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; 5 799698 -84.4  39.2 1.05            0.441        0.463</span></a></code></pre></div>
 </div>
-<div id="example-2-using-the-calculate_scaled_airpb-wrapper-function-to-automatically-apply-scaling-factors-to-air-lead-estimates-" class="section level3">
+<div id="example-2-using-the-add_scaled_airpb-wrapper-function-to-automatically-apply-scaling-factors-to-air-lead-estimates-" class="section level3">
 <h3 class="hasAnchor">
-<a href="#example-2-using-the-calculate_scaled_airpb-wrapper-function-to-automatically-apply-scaling-factors-to-air-lead-estimates-" class="anchor"></a>Example 2: Using the <code>calculate_scaled_airPb()</code> wrapper function to automatically apply scaling factors to air lead estimates.</h3>
+<a href="#example-2-using-the-add_scaled_airpb-wrapper-function-to-automatically-apply-scaling-factors-to-air-lead-estimates-" class="anchor"></a>Example 2: Using the <code>add_scaled_airPb()</code> wrapper function to automatically apply scaling factors to air lead estimates.</h3>
 <p>A common use case is calculating monthly exposures. For example, we may have a pair of coordinates recorded annually for each participant. In the data below, we have 2 unique ids, with lat/lon recorded once per year.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">d &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span>(</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="op">~</span>id,         <span class="op">~</span>lon,        <span class="op">~</span>lat,        <span class="op">~</span>date,</a>
@@ -126,22 +135,22 @@
 <a class="sourceLine" id="cb3-8" data-line-number="8">  )</a></code></pre></div>
 <p>We want to scale the air lead measurements to monthly exposures between these dates, but we need <code>start_date</code> and <code>end_date</code> columns that represent the monthy time periods we want to average over.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">d &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">from =</span> date,</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">         <span class="dt">to =</span> from <span class="op">+</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/lubridate/man/period.html">years</a></span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(id, date) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">dates =</span> <span class="kw">map</span>(data, <span class="op">~</span><span class="kw"><a href="https://rdrr.io/r/base/seq.Date.html">seq.Date</a></span>(<span class="dt">from =</span> .x<span class="op">$</span>from, </a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">from =</span> date,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">         <span class="dt">to =</span> from <span class="op">+</span><span class="st"> </span>lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/period.html">years</a></span>(<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(id, date) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/nest.html">nest</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">dates =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(data, <span class="op">~</span><span class="kw"><a href="https://rdrr.io/r/base/seq.Date.html">seq.Date</a></span>(<span class="dt">from =</span> .x<span class="op">$</span>from, </a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">                                     <span class="dt">to =</span> .x<span class="op">$</span>to, </a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">                                     <span class="dt">by =</span> <span class="st">'3 months'</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'data'</span>, <span class="st">'dates'</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span>(<span class="dt">cols=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'data'</span>, <span class="st">'dates'</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>from, <span class="op">-</span>to) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">start_date =</span> dates) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">end_date =</span> <span class="kw">lead</span>(start_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(end_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span><span class="kw">ungroup</span>()</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">start_date =</span> dates) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">end_date =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lead</a></span>(start_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(end_date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>()</a>
 <a class="sourceLine" id="cb4-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb4-16" data-line-number="16">d <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">scaled_airPb =</span> <span class="kw"><a href="../reference/calculate_scaled_airPb.html">calculate_scaled_airPb</a></span>(.))</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">scaled_airPb =</span> <span class="kw"><a href="../reference/add_scaled_airPb.html">add_scaled_airPb</a></span>(.))</a>
 <a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; # A tibble: 20 x 7</span></a>
 <a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;        id date         lon   lat start_date end_date   scaled_airPb</span></a>
 <a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;     &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;            &lt;dbl&gt;</span></a>
@@ -177,7 +186,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Erika Rasnick.</p>
+  <p>Developed by Erika Rasnick, Cole Brokamp, Pat Ryan.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate air lead exposure estimates at specific locations. — calculate_airPb • airPb</title>
+<title>Calculate temporally scaled air lead exposure estimates at specific locations. — add_scaled_airPb • airPb</title>
 
 
 <!-- jquery -->
@@ -35,15 +35,12 @@
 
 
 
-<meta property="og:title" content="Calculate air lead exposure estimates at specific locations. — calculate_airPb" />
-<meta property="og:description" content="calculate_airPb() uses a land use random forest model developed by Dr. Cole Brokamp
-based on ambient air sampling in Cincinnati, OH between 2001 and 2005 to estimate
-exposure to airborne lead at point locations in the area specified by latitude and longitude.
-The model predictors include greenspace (NDVI) within 1000 meters, population density within
-500 meters, length of bus routes within 900 meters, percent pasure within 800 meters,
-percent developed open land within 1100 meters, percent developed medium land within
-400 meters, percent developed low land within 900 meters, and percent developed
-high land within 1500 meters." />
+<meta property="og:title" content="Calculate temporally scaled air lead exposure estimates at specific locations. — add_scaled_airPb" />
+<meta property="og:description" content="calculate_scaled_airPb() is a wrapper function that estimates airborne lead exposures
+at provided locations by calling calculate_airPb(), then temporally scales those
+estimates using scaling factors computed by calling calculate_scaling_factors().
+This function is particularly useful for calculating exposures at the same locations on
+different dates." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -124,44 +121,33 @@ high land within 1500 meters." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate air lead exposure estimates at specific locations.</h1>
+    <h1>Calculate temporally scaled air lead exposure estimates at specific locations.</h1>
     <small class="dont-index">Source: <a href='https://github.com/geomarker-io/airPb/blob/master/R/air_lead_and_scaling_functions.R'><code>R/air_lead_and_scaling_functions.R</code></a></small>
-    <div class="hidden name"><code>calculate_airPb.Rd</code></div>
+    <div class="hidden name"><code>add_scaled_airPb.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>calculate_airPb()</code> uses a land use random forest model developed by Dr. Cole Brokamp
-based on ambient air sampling in Cincinnati, OH between 2001 and 2005 to estimate
-exposure to airborne lead at point locations in the area specified by latitude and longitude.
-The model predictors include greenspace (NDVI) within 1000 meters, population density within
-500 meters, length of bus routes within 900 meters, percent pasure within 800 meters,
-percent developed open land within 1100 meters, percent developed medium land within
-400 meters, percent developed low land within 900 meters, and percent developed
-high land within 1500 meters.</p>
+    <p><code>calculate_scaled_airPb()</code> is a wrapper function that estimates airborne lead exposures
+at provided locations by calling <code><a href='calculate_airPb.html'>calculate_airPb()</a></code>, then temporally scales those
+estimates using scaling factors computed by calling <code><a href='calculate_scaling_factors.html'>calculate_scaling_factors()</a></code>.
+This function is particularly useful for calculating exposures at the same locations on
+different dates.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_airPb</span>(<span class='no'>locations</span>, <span class='kw'>return.LU.vars</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>add_scaled_airPb</span>(<span class='no'>locations</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>locations</th>
-      <td><p>Data.frame with columns 'id', 'lat', and 'lon' at minimum.</p></td>
-    </tr>
-    <tr>
-      <th>return.LU.vars</th>
-      <td><p>When <code>return.LU.vars = TRUE</code>, the land use predictors used
-to generate the air lead values are also returned.</p></td>
+      <td><p>Data.frame with columns 'id', 'lat','lon', 'start_date', and 'end_date' at minimum.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>return.LU.vars = FALSE</code>, a numeric vector of air lead estimates (ug/m3) ?
-is returned. If <code>return.LU.vars = TRUE</code>, the <code>locations</code> data.frame with
-additional columns for air lead values and the land use predictors used
-to generate the air lead values is returned.</p>
+    <p>A numeric vector of air lead estimates (ug/m3).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Cole Brokamp, Roman Jandarov, MB Rao, Grace LeMasters, Patrick Ryan. Exposure assessment
@@ -170,12 +156,13 @@ A comparison of regression and random forest approaches. Atmospheric Environment
 <a href='http://dx.doi.org/10.1016/j.atmosenv.2016.11.066'>http://dx.doi.org/10.1016/j.atmosenv.2016.11.066</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>my_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>,
-    <span class='kw'>lat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>39.19674</span>, <span class='fl'>39.12731</span>, <span class='fl'>39.28765</span>),
-    <span class='kw'>lon</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>84.58260</span>, -<span class='fl'>84.52700</span>, -<span class='fl'>84.51017</span>))
+    <pre class="examples"><div class='input'><span class='no'>my_data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>id</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>,<span class='fl'>3</span>),
+    <span class='kw'>lat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>39.19674</span>, <span class='fl'>39.19674</span>, <span class='fl'>39.19674</span>),
+    <span class='kw'>lon</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>84.58260</span>, -<span class='fl'>84.58260</span>, -<span class='fl'>84.58260</span>),
+    <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2010-01-08"</span>), <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2012-06-08"</span>), <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2015-04-09"</span>)),
+    <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2010-02-08"</span>), <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2012-07-08"</span>), <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2015-05-09"</span>)))
 
-<span class='no'>lead_est</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_airPb</span>(<span class='no'>my_data</span>, <span class='kw'>return.LU.vars</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>lead_est</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_airPb</span>(<span class='no'>my_data</span>, <span class='kw'>return.LU.vars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+<span class='no'>airPb_scaled</span> <span class='kw'>&lt;-</span> <span class='fu'>add_scaled_airPb</span>(<span class='no'>my_data</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

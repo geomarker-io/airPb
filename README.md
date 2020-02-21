@@ -39,4 +39,10 @@ forest approaches. Atmospheric Environment. 151. 1-11. 2017.
 
 airPb is hosted on GitHub; install with:
 
-    remotes::install_github('erikarasnick/airPb')
+    remotes::install_github('geomarker-io/airPb')
+
+## Examples
+
+See our
+[vignette](https://geomarker-io.github.io/airPb/articles/airPb_examples.html)
+for example usage.

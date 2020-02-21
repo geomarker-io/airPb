@@ -30,7 +30,11 @@ Cole Brokamp, Roman Jandarov, MB Rao, Grace LeMasters, Patrick Ryan. Exposure as
 airPb is hosted on GitHub; install with:
 
 ```
-remotes::install_github('erikarasnick/airPb')
+remotes::install_github('geomarker-io/airPb')
 ```
+
+## Examples
+
+See our [vignette](https://geomarker-io.github.io/airPb/articles/airPb_examples.html) for example usage.
 
 

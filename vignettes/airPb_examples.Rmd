@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
 
 ```{r setup, message=FALSE}
 library(airPb)
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(purrr)
 ```
 
 ### Example 1: Using `calculate_airPb()` and `calculate_scaling_factors()` and manually applying scaling factors to air lead estimates.
@@ -40,7 +42,7 @@ d %>%
          scaled_airPb = airPb * scaling_factors)
 ```
 
-### Example 2: Using the `calculate_scaled_airPb()` wrapper function to automatically apply scaling factors to air lead estimates.
+### Example 2: Using the `add_scaled_airPb()` wrapper function to automatically apply scaling factors to air lead estimates.
 
 A common use case is calculating monthly exposures. For example, we may have a pair of coordinates recorded annually for each participant. In the data below, we have 2 unique ids, with lat/lon recorded once per year.
 
@@ -74,7 +76,7 @@ d <- d %>%
   ungroup()
 
 d %>% 
-  mutate(scaled_airPb = calculate_scaled_airPb(.))
+  mutate(scaled_airPb = add_scaled_airPb(.))
 ```
 
 

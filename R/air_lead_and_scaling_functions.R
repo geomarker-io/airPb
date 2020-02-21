@@ -41,15 +41,29 @@ calculate_airPb <- function(locations, return.LU.vars=FALSE) {
   if(!"id" %in% colnames(locations)) {stop("locations dataframe must have a column called 'id'")}
   if(!"lat" %in% colnames(locations)) {stop("locations dataframe must have a column called 'lat'")}
   if(!"lon" %in% colnames(locations)) {stop("locations dataframe must have a column called 'lon'")}
+  if("airPb" %in% colnames(locations)) {stop("locations dataframe must not already have a column called 'airPb'")}
 
-  missing <- locations %>%
-    dplyr::filter(is.na(lat), is.na(lon))
+  locations$.row <- seq_len(nrow(locations))
 
-  if (nrow(missing) > 0) {warning(paste0(missing$n,
-                                     " observations were missing lat/lon coordinates and will be excluded."))}
+  d <-
+    locations %>%
+    dplyr::select(.row, lat, lon) %>%
+    na.omit() %>%
+    dplyr::group_by(lat, lon) %>%
+    tidyr::nest(.rows = c(.row)) %>%
+    sf::st_as_sf(coords = c('lon', 'lat'), crs = 4326) %>%
+    dplyr::mutate(unique_index = seq_len(nrow(.)))
 
-  out <- make_spatial_predictors(locations)
-  out$airPb <- stats::predict(pb_rf_model, newdata = out)
+  out <- make_spatial_predictors(d)
+  out$airPb <- stats::predict(pb_rf_model, newdata = out %>%
+                                dplyr::select(unique_index, greenspace_1000:developed.high_1500) %>%
+                                sf::st_drop_geometry())
+
+  out <- out %>%
+    tidyr::unnest(cols = c(.rows)) %>%
+    sf::st_drop_geometry() %>%
+    dplyr::left_join(locations, out, by = '.row') %>%
+    dplyr::select(-.row, -unique_index)
 
   if (return.LU.vars == FALSE) {
     out <- out$airPb
@@ -160,21 +174,14 @@ calculate_scaling_factors <- function(dates) {
 #'     start_date = c(as.Date("2010-01-08"), as.Date("2012-06-08"), as.Date("2015-04-09")),
 #'     end_date = c(as.Date("2010-02-08"), as.Date("2012-07-08"), as.Date("2015-05-09")))
 #'
-#' airPb_scaled <- calculate_scaled_airPb(my_data)
+#' airPb_scaled <- add_scaled_airPb(my_data)
 #' @export
 
-calculate_scaled_airPb <- function(locations) {
+add_scaled_airPb <- function(locations) {
 
-  locations <- d
-  unique_locations <- locations %>%
-    dplyr::filter(!(duplicated(lat) & duplicated(lon)))
-
-  lead_unadj <- calculate_airPb(unique_locations, return.LU.vars = TRUE)
-  lead_unadj <- dplyr::left_join(locations, lead_unadj, by=c("id", "lat", "lon"))
-
+  lead_unadj <- calculate_airPb(locations, return.LU.vars = FALSE)
   scaling_factors <- calculate_scaling_factors(dates = locations)
-
-  lead_adj <- lead_unadj$airPb * scaling_factors
+  lead_adj <- lead_unadj * scaling_factors
 
   return(lead_adj)
 }
