@@ -10,6 +10,8 @@ exposure from a land use random forest model developed by Dr. Cole
 Brokamp based on ambient air sampling in Cincinnati, OH between 2001 and
 2005.
 
+![](man/figures/airPb_tracts.png)
+
 The model predictors include greenspace (NDVI) within 1000 meters,
 population density within 500 meters, length of bus routes within 900
 meters, percent pasure within 800 meters, percent developed open land
