@@ -15,6 +15,10 @@ knitr::opts_chunk$set(
 
 # airPb
 
+<!-- badges: start -->
+[![R build status](https://github.com/erikarasnick/airPb/workflows/R-CMD-check/badge.svg)](https://github.com/erikarasnick/airPb/actions)
+<!-- badges: end -->
+
 The goal of the airPb package is to easily and reproducibly assess exposure to airborne lead at specific locations in and around Cincinnati, Ohio. The package calculates predictions of air lead exposure from a land use random forest model developed by Dr. Cole Brokamp based on ambient air sampling in Cincinnati, OH between 2001 and 2005. 
 
 ![](man/figures/airPb_tracts.png)

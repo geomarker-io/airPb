@@ -5,3 +5,4 @@
 ^data-raw$
 ^LICENSE\.md$
 ^pkg_dev\.R
+^\.github$

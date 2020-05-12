@@ -3,6 +3,12 @@
 
 # airPb
 
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/erikarasnick/airPb/workflows/R-CMD-check/badge.svg)](https://github.com/erikarasnick/airPb/actions)
+<!-- badges: end -->
+
 The goal of the airPb package is to easily and reproducibly assess
 exposure to airborne lead at specific locations in and around
 Cincinnati, Ohio. The package calculates predictions of air lead
